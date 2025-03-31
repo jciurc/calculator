@@ -1,0 +1,25 @@
+import { Styles } from "styles.slint";
+export component Button {
+  width:  2rem + (Styles.margin * 2);
+  height: 2rem + (Styles.margin * 2);
+
+  in property <string> label;
+  callback clicked();
+
+  Rectangle {
+      background: Styles.gradient;
+      border-radius: 6px;
+
+      myText := Text {
+          text: label;
+          font-size: 30px;
+          font-weight: 800;
+          color: #333;
+      }
+      TouchArea {
+          clicked => {
+             root.clicked();
+          }
+      }
+  }
+}

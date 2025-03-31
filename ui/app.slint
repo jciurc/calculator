@@ -1,0 +1,65 @@
+import { AboutSlint, VerticalBox   } from "std-widgets.slint";
+import { Button } from "Button.slint";
+import { Styles } from "styles.slint";
+
+export component App {
+    width: 600px;
+    height: 600px;
+
+    property <int> count: 1;
+
+
+    Rectangle {
+        background: #101422;
+        border-width: 5px;
+        border-color: Styles.gradient;
+        border-radius: 30px;
+    }
+
+
+    HorizontalLayout {
+        x: Styles.margin / 2;
+
+        for i in 5 : Image {
+            source: @image-url("bloons.png");
+            width: (root.width - Styles.margin) / 5;
+            opacity: 0.1;
+        }
+    }
+
+    HorizontalLayout {
+        x: Styles.margin / 2;
+
+        for i in count : Image {
+            source: @image-url("bloons.png");
+            width: (root.width - Styles.margin) / 5;
+        }
+    }
+
+
+    Text {
+        text: "Rate me :3";
+        y: Styles.margin;
+        font-size: 30px;
+    }
+
+    HorizontalLayout {
+        x: (root.width / 2) - Styles.margin * 3;
+        spacing: Styles.margin;
+
+        Button {
+            y: root.height - self.height - Styles.margin;
+            label: "-";
+            clicked => {
+                count = Math.max(count - 1, 1);
+            }
+        }
+        Button {
+            y: root.height - self.height - Styles.margin;
+            label: "+";
+            clicked => {
+                count = Math.min(count + 1, 5);
+            }
+        }
+    }
+}
