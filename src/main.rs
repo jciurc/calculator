@@ -1,26 +1,21 @@
 use std::io::{Write, stdin, stdout};
 
-fn read(input: &mut String) {
+fn read(prompt: &str) -> String {
+    let mut input = String::new();
+
+    print!("{prompt}");
     stdout().flush().expect("failed to flush");
-    stdin().read_line(input).expect("failed to read");
+    stdin().read_line(&mut input).expect("failed to read");
+    input
 }
 
 fn main() {
     println!("== Calculator ==");
     println!("----------------");
 
-    let mut x = String::new();
-    let mut y = String::new();
-    let mut operator = String::new();
-
-    print!("x: ");
-    read(&mut x);
-
-    print!("y: ");
-    read(&mut y);
-
-    print!("Operator [+-*/]: ");
-    read(&mut operator);
+    let x = read("\nx: ");
+    let y = read("y: ");
+    let operator = read("Operator [+-*/]: ");
 
     let x: f32 = x.trim().parse().unwrap();
     let y: f32 = y.trim().parse().unwrap();
