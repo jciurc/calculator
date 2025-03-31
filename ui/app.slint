@@ -16,23 +16,18 @@ export component App {
         border-radius: 30px;
     }
 
-
     HorizontalLayout {
         x: Styles.margin / 2;
 
         for i in 5 : Image {
             source: @image-url("bloons.png");
             width: (root.width - Styles.margin) / 5;
-            opacity: 0.1;
-        }
-    }
+            opacity: count > i ? 1 : 0.1;
 
-    HorizontalLayout {
-        x: Styles.margin / 2;
-
-        for i in count : Image {
-            source: @image-url("bloons.png");
-            width: (root.width - Styles.margin) / 5;
+            animate opacity {
+                duration: 120ms;
+                easing: ease-in-out-quad;
+            }
         }
     }
 
