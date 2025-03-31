@@ -2,12 +2,11 @@ import { AboutSlint, VerticalBox   } from "std-widgets.slint";
 import { Button } from "Button.slint";
 import { Styles } from "styles.slint";
 
-export component App {
+export component AppWindow inherits Window {
     width: 600px;
     height: 600px;
 
     property <int> count: 1;
-
 
     Rectangle {
         background: #101422;
