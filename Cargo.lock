@@ -687,7 +687,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "calculator-app"
+name = "calculator"
 version = "0.1.0"
 dependencies = [
  "slint",

@@ -1,4 +1,4 @@
-# Calculator App
+# Calculator
 
 A template for a Rust application that's using [Slint](https://slint.rs/) for the user interface.
 
