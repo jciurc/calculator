@@ -1,12 +1,10 @@
-import { AboutSlint, VerticalBox   } from "std-widgets.slint";
-import { Button } from "Button.slint";
+import { AboutSlint, VerticalBox, Button, TextEdit  } from "std-widgets.slint";
 import { Styles } from "styles.slint";
 
 export component MainWindow inherits Window {
     width: 600px;
-    height: 600px;
-
-    property <int> count: 1;
+    height: 800px;
+    background: transparent;
 
     Rectangle {
         background: #101422;
@@ -15,44 +13,43 @@ export component MainWindow inherits Window {
         border-radius: 30px;
     }
 
-    HorizontalLayout {
-        x: Styles.margin / 2;
-
-        for i in 5 : Image {
-            source: @image-url("bloons.png");
-            width: (root.width - Styles.margin) / 5;
-            opacity: count > i ? 1 : 0.1;
-
-            animate opacity {
-                duration: 120ms;
-                easing: ease-in-out-quad;
-            }
+    VerticalLayout {
+        TextInput {
+            vertical-alignment: center;
+            horizontal-alignment: right;
         }
-    }
 
+        GridLayout {
+            padding: Styles.margin;
+            spacing: Styles.margin;
 
-    Text {
-        text: "Rate me :3";
-        y: Styles.margin;
-        font-size: 30px;
-    }
-
-    HorizontalLayout {
-        x: (root.width / 2) - Styles.margin * 3;
-        spacing: Styles.margin;
-
-        Button {
-            y: root.height - self.height - Styles.margin;
-            label: "-";
-            clicked => {
-                count = Math.max(count - 1, 1);
+            Row {
+                Button { text: "7"; }
+                Button { text: "8"; }
+                Button { text: "9"; }
+                Button { text: "-"; }
+                Button { text: "+"; }
             }
-        }
-        Button {
-            y: root.height - self.height - Styles.margin;
-            label: "+";
-            clicked => {
-                count = Math.min(count + 1, 5);
+            Row {
+                Button { text: "4"; }
+                Button { text: "5"; }
+                Button { text: "6"; }
+                Button { text: "*"; }
+                Button { text: "/"; }
+            }
+            Row {
+                Button { text: "1"; }
+                Button { text: "2"; }
+                Button { text: "3"; }
+                Button { text: "%"; }
+                Button { text: "^";   }
+            }
+            Row {
+                Button { text: "0"; }
+                Button { text: "."; }
+                Button { text: "C"; }
+                Button { text: "="; colspan: 2; }
+
             }
         }
     }

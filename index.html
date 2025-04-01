@@ -1,9 +1,15 @@
-<html>
-  <body>
+<!DOCTYPE html>
+    <style type="text/css">
+      @media (prefers-color-scheme: dark) {
+        html, body {
+          background-color: #13151d;
+        }
+      }
+    </style>
+  <body >
     <!-- canvas required by the Slint runtime -->
     <canvas id="canvas"></canvas>
     <script type="module">
-      // import the generated file.
       import init from "./pkg/app.js";
       init();
     </script>
