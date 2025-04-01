@@ -12,13 +12,9 @@ pub fn read(prompt: &str) -> String {
 pub fn run() {
     println!("== Calculator ==");
 
-    let x = read("x: ");
-    let y = read("y: ");
-    let operator = read("Operator [+-*/]: ");
-
-    let x: f32 = x.trim().parse().unwrap();
-    let y: f32 = y.trim().parse().unwrap();
-    let operator: char = operator.trim().chars().next().unwrap();
+    let x: f64 = read("x: ").trim().parse().unwrap();
+    let y: f64 = read("y: ").trim().parse().unwrap();
+    let operator = read("Operator [+-*/]: ").trim().chars().next().unwrap();
 
     let result = match operator {
         '+' => x + y,
