@@ -23,14 +23,14 @@ jobs:
 
       - name: Build
         id: build
-        run: wasm-pack build --target web
+        run: wasm-pack build --release --target web --out-name app
 
       - name: Bundle
         run: |
-          rm -rf dist
-          mkdir dist
+          mkdir -p dist/pkg
           cp index.html dist/index.html
-          cp -r pkg dist/pkg
+          cp pkg/app.js dist/pkg/app.js
+          cp pkg/app_bg.wasm dist/pkg/app_bg.wasm
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -39,6 +39,10 @@ jobs:
 
   deploy:
     needs: build
+
+    permissions:
+      pages: write
+      id-token: write
 
     environment:
       name: github-pages
