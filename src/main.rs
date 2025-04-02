@@ -6,10 +6,26 @@ slint::include_modules!();
 pub fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
+    let mut results: String = ui.get_display().to_string();
 
     ui.on_callback(move |value| {
         let ui = ui_handle.unwrap();
-        ui.set_display((ui.get_display() + &value.to_shared_string()).into())
+        let value = value.chars().next().unwrap();
+
+        match value {
+            '1'..='9' if results == "0" => results.clear(),
+            _ => {}
+        }
+
+        match value {
+            '1'..='9' => results.push(value),
+            '0' if results.len() != 1 => results.push(value),
+            '.' if !results.contains('.') => results.push(value),
+            'C' => results = '0'.to_string(),
+            _ => {}
+        }
+
+        ui.set_display(results.to_shared_string())
     });
 
     ui.run().unwrap();
