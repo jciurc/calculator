@@ -6,26 +6,47 @@ slint::include_modules!();
 pub fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
-    let mut results: String = ui.get_display().to_string();
+    let mut results: String = ui.get_results().to_string();
+    let mut display: String = ui.get_display().to_string();
 
     ui.on_callback(move |value| {
         let ui = ui_handle.unwrap();
         let value = value.chars().next().unwrap();
 
         match value {
-            '1'..='9' if results == "0" => results.clear(),
+            '0' => {
+                if results != "0" {
+                    results.push(value)
+                }
+            }
+            '.' => {
+                if results.len() == 0 || results.chars().last().unwrap() != '.' {
+                    results.push(value)
+                }
+            }
+            'C' | '=' => results.clear(),
+            _ => results.push(value),
+        }
+
+        ui.set_results(results.to_shared_string());
+
+        match value {
+            '0'..='9' if display == "0" => display.clear(),
             _ => {}
         }
 
         match value {
-            '1'..='9' => results.push(value),
-            '0' if results.len() != 1 => results.push(value),
-            '.' if !results.contains('.') => results.push(value),
-            'C' => results = '0'.to_string(),
-            _ => {}
+            '0'..='9' => display.push(value),
+            '.' => {
+                if !display.contains('.') {
+                    display.push(value);
+                }
+            }
+            'C' => display = '0'.to_string(),
+            _ => display.clear(),
         }
 
-        ui.set_display(results.to_shared_string())
+        ui.set_display(display.to_shared_string());
     });
 
     ui.run().unwrap();

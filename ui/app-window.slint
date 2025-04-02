@@ -12,7 +12,7 @@ export component MainWindow inherits Window {
     callback callback(string) ;
 
     Rectangle {
-        background: @linear-gradient(135deg, #344551, #3F3F52);
+        background: @linear-gradient(135deg,rgb(52, 67, 81), #3F3F52);
         border-width: 5px;
         border-color: Styles.gradient;
         border-radius: 30px;
@@ -21,7 +21,7 @@ export component MainWindow inherits Window {
     VerticalLayout {
         padding: Styles.margin;
         Text {
-            text: root.display;
+            text: results;
 
             height: 6rem;
             vertical-alignment: center;
