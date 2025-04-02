@@ -7,7 +7,6 @@ pub fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
 
-    let mut result: String = ui.get_result().to_string();
     let mut display: String = ui.get_display().to_string();
     let mut open_count = 0;
 
@@ -49,26 +48,10 @@ pub fn main() {
         }
 
         ui.set_display(display.to_shared_string());
-
-        // build result string
-        match key {
-            // clear leading 0
-            '0'..='9' | '(' | '-' if result == "0" => result.clear(),
-            _ => {}
-        }
-
-        match key {
-            '0'..='9' => result.push(key),
-            '.' => {
-                if !result.contains('.') {
-                    result.push(key);
-                }
-            }
-            '=' => {}
-            _ => result.clear(),
-        }
-
-        ui.set_result(result.to_shared_string());
+        ui.set_result(match key {
+            'C' | '=' => "".to_shared_string(),
+            _ => display.to_shared_string(),
+        })
     });
 
     ui.run().unwrap();
