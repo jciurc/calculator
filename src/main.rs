@@ -9,11 +9,11 @@ pub fn main() {
 
     let mut display: String = ui.get_display().to_string();
     let mut open_count = 0;
-    let mut decimal_allowed = true;
+    let mut decimal_used = false;
 
-    ui.on_callback(move |key| {
+    ui.on_callback(move |char| {
         let ui = ui_handle.unwrap();
-        let char = key.chars().next().unwrap();
+        let char = char.chars().next().unwrap();
 
         match char {
             // clear leading 0
@@ -28,16 +28,16 @@ pub fn main() {
             }
             '0'..='9' => display.push(char),
             // ignore remaining chars until decimal is closed
-            _ if display.len() > 0 && display.chars().last().unwrap() == '.' => {}
+            _ if display.chars().last().unwrap_or(' ') == '.' => {}
             '.' => {
-                if decimal_allowed {
+                if !decimal_used {
                     display.push(char);
-                    decimal_allowed = false;
+                    decimal_used = true;
                 }
             }
             // the remaining chars indicate a new number so a decimal is allowed again
             _ => {
-                decimal_allowed = true;
+                decimal_used = false;
                 match char {
                     '-' => {
                         if display.len() == 0 || display.chars().last().unwrap() != '-' {
@@ -63,10 +63,12 @@ pub fn main() {
             }
         }
 
+        let is_valid_expression =
+            open_count == 0 && "-+*/%^.".contains(display.chars().last().unwrap_or(' '));
+
         ui.set_display(display.to_shared_string());
         ui.set_result(match char {
-            'C' => "".to_shared_string(),
-            '=' if !"-+*/%^".contains(display.chars().last().unwrap()) => "".to_shared_string(),
+            'C' | '=' if is_valid_expression => "".to_shared_string(),
             _ => display.to_shared_string(),
         })
     });
