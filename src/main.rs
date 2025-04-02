@@ -14,7 +14,6 @@ pub fn main() {
         let ui = ui_handle.unwrap();
         let key = key.chars().next().unwrap();
 
-        // build main string
         match key {
             // clear leading 0
             '0'..='9' | '(' | '-' if display == "0" => display.clear(),
@@ -22,34 +21,40 @@ pub fn main() {
         }
 
         match key {
+            'C' => display = '0'.to_string(),
             '0'..='9' => display.push(key),
-            '.' => {
-                if display.len() == 0 || display.chars().last().unwrap() != '.' {
-                    display.push(key)
-                }
-            }
-            '-' | '+' | '*' | '/' | '%' | '^' => {
-                if display.len() > 0 && !"(-+*/%^".contains(display.chars().last().unwrap()) {
-                    display.push(key)
+            // ignore keys until decimal is closed
+            _ if display.len() > 0 && display.chars().last().unwrap() == '.' => {}
+            '.' => display.push(key),
+            '-' => {
+                if display.len() == 0 || display.chars().last().unwrap() != '-' {
+                    display.push(key);
                 }
             }
             '(' => {
                 open_count += 1;
                 display.push(key);
             }
+            // prevent dangling operators
+            _ if "-+*/%^".contains(display.chars().last().unwrap()) => {}
+            '+' | '*' | '/' | '%' | '^' => {
+                if display.len() > 0 {
+                    display.push(key)
+                }
+            }
             ')' => {
-                if open_count > 0 && !"(-+*/%^.".contains(display.chars().last().unwrap()) {
+                if open_count > 0 && display.chars().last().unwrap() != '(' {
                     open_count -= 1;
                     display.push(key);
                 }
             }
-            'C' => display = '0'.to_string(),
             _ => {}
         }
 
         ui.set_display(display.to_shared_string());
         ui.set_result(match key {
-            'C' | '=' => "".to_shared_string(),
+            'C' => "".to_shared_string(),
+            '=' if !"-+*/%^".contains(display.chars().last().unwrap()) => "".to_shared_string(),
             _ => display.to_shared_string(),
         })
     });
