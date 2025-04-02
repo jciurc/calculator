@@ -10,53 +10,55 @@ pub fn main() {
     let mut results: String = ui.get_results().to_string();
     let mut display: String = ui.get_display().to_string();
 
-    ui.on_callback(move |value| {
+    ui.on_callback(move |key| {
         let ui = ui_handle.unwrap();
-        let value = value.chars().next().unwrap();
+        let key = key.chars().next().unwrap();
 
-        // build results string
-        match value {
-            '0' => {
-                if results != "0" {
-                    results.push(value)
-                }
-            }
-            '1'..='9' => results.push(value),
-            '.' => {
-                if results.len() == 0 || results.chars().last().unwrap() != '.' {
-                    results.push(value)
-                }
-            }
-            '-' | '+' | '*' | '/' | '%' | '^' => {
-                if results.len() > 0 && !"-+*/%^".contains(results.chars().last().unwrap()) {
-                    results.push(value)
-                }
-            }
-            'C' | '=' => results.clear(),
-            _ => results.push(value),
-        }
-
-        ui.set_results(results.to_shared_string());
-
-        // build main display string
-        match value {
+        // build main string
+        match key {
             // clear leading 0
             '0'..='9' if display == "0" => display.clear(),
             _ => {}
         }
 
-        match value {
-            '0'..='9' => display.push(value),
+        match key {
+            '0'..='9' => display.push(key),
             '.' => {
-                if !display.contains('.') {
-                    display.push(value);
+                if display.len() == 0 || display.chars().last().unwrap() != '.' {
+                    display.push(key)
+                }
+            }
+            '-' | '+' | '*' | '/' | '%' | '^' => {
+                if display.len() > 0 && !"-+*/%^".contains(display.chars().last().unwrap()) {
+                    display.push(key)
                 }
             }
             'C' => display = '0'.to_string(),
-            _ => display.clear(),
+            '=' => {}
+            _ => display.push(key),
         }
 
         ui.set_display(display.to_shared_string());
+
+        // build result string
+        match key {
+            // clear leading 0
+            '0'..='9' if results == "0" => results.clear(),
+            _ => {}
+        }
+
+        match key {
+            '0'..='9' => results.push(key),
+            '.' => {
+                if !results.contains('.') {
+                    results.push(key);
+                }
+            }
+            '=' => {}
+            _ => results.clear(),
+        }
+
+        ui.set_results(results.to_shared_string());
     });
 
     ui.run().unwrap();
