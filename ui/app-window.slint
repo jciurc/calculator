@@ -6,11 +6,13 @@ export component MainWindow inherits Window {
     height: 800px;
     background: transparent;
 
-    property <string> value: "3 + (4 * 2)";
-    property <string> display: "";
+    in property <string> results: "";
+    in property <string> display: "";
+
+    callback callback(string) ;
 
     Rectangle {
-        background: #101422;
+        background:rgb(38, 38, 42);
         border-width: 5px;
         border-color: Styles.gradient;
         border-radius: 30px;
@@ -18,25 +20,29 @@ export component MainWindow inherits Window {
 
     VerticalLayout {
         padding: Styles.margin;
-        TextInput {
-            text: value;
+        Text {
+            text: root.display;
+
             height: 6rem;
             vertical-alignment: center;
             horizontal-alignment: right;
 
+            color:#10131f;
             font-size: 20px;
             font-family: "Lucida Console";
-            opacity: 0.6;
+            opacity: 0.8;
         }
         Text {
+            text: display;
+
             height: 12rem;
             vertical-alignment: center;
             horizontal-alignment: right;
-            text: display;
+
+            color:#10131f;
             font-size: 30px;
             font-weight: 800;
             font-family: "Lucida Console";
-
         }
 
         GridLayout {
@@ -44,31 +50,31 @@ export component MainWindow inherits Window {
             spacing: Styles.margin;
 
             Row {
-                Button { text: "7"; }
-                Button { text: "8"; }
-                Button { text: "9"; }
-                Button { text: "-"; }
-                Button { text: "+"; }
+                Button { text: "7"; clicked => { root.callback("7") } }
+                Button { text: "8"; clicked => { root.callback("8") } }
+                Button { text: "9"; clicked => { root.callback("9") } }
+                Button { text: "-"; clicked => { root.callback("-") } }
+                Button { text: "+"; clicked => { root.callback("+") } }
             }
             Row {
-                Button { text: "4"; }
-                Button { text: "5"; }
-                Button { text: "6"; }
-                Button { text: "*"; }
-                Button { text: "/"; }
+                Button { text: "4"; clicked => { root.callback("4") } }
+                Button { text: "5"; clicked => { root.callback("5") } }
+                Button { text: "6"; clicked => { root.callback("6") } }
+                Button { text: "*"; clicked => { root.callback("*") } }
+                Button { text: "/"; clicked => { root.callback("/") } }
             }
             Row {
-                Button { text: "1"; }
-                Button { text: "2"; }
-                Button { text: "3"; }
-                Button { text: "%"; }
-                Button { text: "^"; }
+                Button { text: "1"; clicked => { root.callback("1") } }
+                Button { text: "2"; clicked => { root.callback("2") } }
+                Button { text: "3"; clicked => { root.callback("3") } }
+                Button { text: "%"; clicked => { root.callback("%") } }
+                Button { text: "^"; clicked => { root.callback("^") } }
             }
             Row {
-                Button { text: "0"; }
-                Button { text: "."; }
-                Button { text: "C"; }
-                Button { text: "="; colspan: 2; }
+                Button { text: "0"; clicked => { root.callback("0") } }
+                Button { text: "."; clicked => { root.callback(".") } }
+                Button { text: "C"; clicked => { root.callback("C") } }
+                Button { text: "="; colspan: 2; clicked => { root.callback("=") }}
 
             }
         }
