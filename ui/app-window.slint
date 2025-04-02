@@ -2,7 +2,7 @@ import { AboutSlint, VerticalBox, Button, TextEdit  } from "std-widgets.slint";
 import { Styles } from "styles.slint";
 
 export component MainWindow inherits Window {
-    width: 40rem;
+    width: 600px;
     height: 800px;
     background: transparent;
 
@@ -12,30 +12,29 @@ export component MainWindow inherits Window {
     callback callback(string) ;
 
     Rectangle {
-        background: @linear-gradient(135deg,rgb(52, 67, 81), #3F3F52);
-        border-width: 5px;
+        background: @linear-gradient(135deg, rgb(52, 67, 81), #3F3F52);
         border-color: Styles.gradient;
+        border-width: 5px;
         border-radius: 30px;
     }
 
     VerticalLayout {
         padding: Styles.margin;
         Text {
-            text: results;
+            text: root.results;
 
             height: 6rem;
             vertical-alignment: center;
             horizontal-alignment: right;
 
-            // color:#10131f;
             font-size: 20px;
             font-family: "Lucida Console";
             opacity: 0.8;
         }
         Text {
-            text: display;
+            text: root.display;
 
-            height: 12rem;
+            height: 200px;
             vertical-alignment: center;
             horizontal-alignment: right;
 
@@ -52,28 +51,31 @@ export component MainWindow inherits Window {
                 Button { text: "7"; clicked => { root.callback("7") } }
                 Button { text: "8"; clicked => { root.callback("8") } }
                 Button { text: "9"; clicked => { root.callback("9") } }
-                Button { text: "-"; clicked => { root.callback("-") } }
-                Button { text: "+"; clicked => { root.callback("+") } }
+                Button { text: "%"; clicked => { root.callback("%") } }
+                Button { text: "^"; clicked => { root.callback("^") } }
+                Button { text: "⌫"; clicked => { root.callback("⌫") } }
             }
             Row {
                 Button { text: "4"; clicked => { root.callback("4") } }
                 Button { text: "5"; clicked => { root.callback("5") } }
                 Button { text: "6"; clicked => { root.callback("6") } }
-                Button { text: "*"; clicked => { root.callback("*") } }
                 Button { text: "/"; clicked => { root.callback("/") } }
+                Button { text: "*"; clicked => { root.callback("*") } }
+                Button { text: "-"; clicked => { root.callback("-") } }
             }
             Row {
                 Button { text: "1"; clicked => { root.callback("1") } }
                 Button { text: "2"; clicked => { root.callback("2") } }
                 Button { text: "3"; clicked => { root.callback("3") } }
-                Button { text: "%"; clicked => { root.callback("%") } }
-                Button { text: "^"; clicked => { root.callback("^") } }
+                Button { text: "("; clicked => { root.callback("(") } }
+                Button { text: ")"; clicked => { root.callback(")") } }
+                Button { text: "+"; clicked => { root.callback("+") } }
             }
             Row {
                 Button { text: "0"; clicked => { root.callback("0") } }
                 Button { text: "."; clicked => { root.callback(".") } }
                 Button { text: "C"; clicked => { root.callback("C") } }
-                Button { text: "="; colspan: 2; clicked => { root.callback("=") }}
+                Button { text: "="; colspan: 3; clicked => { root.callback("=") }}
 
             }
         }
