@@ -2,9 +2,12 @@ import { AboutSlint, VerticalBox, Button, TextEdit  } from "std-widgets.slint";
 import { Styles } from "styles.slint";
 
 export component MainWindow inherits Window {
-    width: 400px;
+    width: 40rem;
     height: 800px;
     background: transparent;
+
+    property <string> value: "3 + (4 * 2)";
+    property <string> display: "";
 
     Rectangle {
         background: #101422;
@@ -14,9 +17,26 @@ export component MainWindow inherits Window {
     }
 
     VerticalLayout {
+        padding: Styles.margin;
         TextInput {
+            text: value;
+            height: 6rem;
             vertical-alignment: center;
             horizontal-alignment: right;
+
+            font-size: 20px;
+            font-family: "Lucida Console";
+            opacity: 0.6;
+        }
+        Text {
+            height: 12rem;
+            vertical-alignment: center;
+            horizontal-alignment: right;
+            text: display;
+            font-size: 30px;
+            font-weight: 800;
+            font-family: "Lucida Console";
+
         }
 
         GridLayout {

@@ -10,7 +10,7 @@ slint = "1.8.0"
 slint-build = "1.8.0"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-wasm-bindgen = { version = "0.2" }
+wasm-bindgen = "0.2"
 
 [lib]
 path = "src/main.rs"
