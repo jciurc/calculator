@@ -1,14 +1,22 @@
 <!DOCTYPE html>
   <head>
-    <title>Calculator (Built in Rust)</title>
+    <title>Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
   <style type="text/css">
     @media (prefers-color-scheme: dark) {
       html, body { background-color: #13151d; }
     }
+
     #canvas { outline: none; }
-  </style>
-  <body >
+    body {
+      margin: 0;
+      padding: 4rem 0 0;
+      display: flex;
+      justify-content: center;
+    }
+    </style>
+  <body>
     <!-- canvas required by the Slint runtime -->
     <canvas id="canvas"></canvas>
     <script type="module">
