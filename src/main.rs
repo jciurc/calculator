@@ -23,6 +23,9 @@ pub fn main() {
 
         match char {
             'C' => display = '0'.to_string(),
+            '⌫' if display.len() > 0 => {
+                display.pop();
+            }
             '0'..='9' => display.push(char),
             // ignore remaining chars until decimal is closed
             _ if display.len() > 0 && display.chars().last().unwrap() == '.' => {}
@@ -46,14 +49,11 @@ pub fn main() {
                         display.push(char);
                     }
                     // prevent dangling operators
-                    _ if "-+*/%^".contains(display.chars().last().unwrap()) => {}
-                    '+' | '*' | '/' | '%' | '^' => {
-                        if display.len() > 0 {
-                            display.push(char)
-                        }
-                    }
+                    _ if display.len() == 0
+                        || "(-+*/%^".contains(display.chars().last().unwrap()) => {}
+                    '+' | '*' | '/' | '%' | '^' => display.push(char),
                     ')' => {
-                        if open_count > 0 && display.chars().last().unwrap() != '(' {
+                        if open_count > 0 {
                             open_count -= 1;
                             display.push(char);
                         }
