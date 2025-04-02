@@ -24,7 +24,14 @@ pub fn main() {
         match char {
             'C' => display = '0'.to_string(),
             '⌫' if display.len() > 0 => {
-                display.pop();
+                let deleted = display.pop();
+
+                match deleted {
+                    Some('.') => decimal_used = false,
+                    Some('(') => open_count -= 1,
+                    Some(')') => open_count += 1,
+                    _ => {}
+                }
             }
             '0'..='9' => display.push(char),
             // ignore remaining chars until decimal is closed
@@ -45,8 +52,8 @@ pub fn main() {
                         }
                     }
                     '(' => {
-                        open_count += 1;
                         display.push(char);
+                        open_count += 1;
                     }
                     // prevent dangling operators
                     _ if display.len() == 0
@@ -54,8 +61,8 @@ pub fn main() {
                     '+' | '*' | '/' | '%' | '^' => display.push(char),
                     ')' => {
                         if open_count > 0 {
-                            open_count -= 1;
                             display.push(char);
+                            open_count -= 1;
                         }
                     }
                     _ => {}
