@@ -6,6 +6,7 @@ slint::include_modules!();
 pub fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
+
     let mut results: String = ui.get_results().to_string();
     let mut display: String = ui.get_display().to_string();
 
@@ -13,14 +14,21 @@ pub fn main() {
         let ui = ui_handle.unwrap();
         let value = value.chars().next().unwrap();
 
+        // build results string
         match value {
             '0' => {
                 if results != "0" {
                     results.push(value)
                 }
             }
+            '1'..='9' => results.push(value),
             '.' => {
                 if results.len() == 0 || results.chars().last().unwrap() != '.' {
+                    results.push(value)
+                }
+            }
+            '-' | '+' | '*' | '/' | '%' | '^' => {
+                if results.len() > 0 && !"-+*/%^".contains(results.chars().last().unwrap()) {
                     results.push(value)
                 }
             }
@@ -30,7 +38,9 @@ pub fn main() {
 
         ui.set_results(results.to_shared_string());
 
+        // build main display string
         match value {
+            // clear leading 0
             '0'..='9' if display == "0" => display.clear(),
             _ => {}
         }
