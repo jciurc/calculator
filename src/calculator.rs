@@ -36,7 +36,10 @@ pub fn calculate(expr: String) -> String {
         // handle operators
         match char {
             _ if precedence(char) > 0 => {
-                while stack.len() > 0 && precedence(stack[stack.len() - 1]) < precedence(char) {
+                while stack.len() > 0
+                    && precedence(stack[stack.len() - 1]) > 0
+                    && precedence(stack[stack.len() - 1]) < precedence(char)
+                {
                     output.push(stack.pop().unwrap().to_string());
                 }
                 if char == '-' {
