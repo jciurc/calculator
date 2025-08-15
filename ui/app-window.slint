@@ -6,7 +6,7 @@ export component MainWindow inherits Window {
     height: 800px;
     background: transparent;
 
-    in property <string> result: "";
+    in property <string> expression: "";
     in property <string> display: "0";
 
     callback callback(string) ;
@@ -21,7 +21,7 @@ export component MainWindow inherits Window {
     VerticalLayout {
         padding: Styles.margin;
         Text {
-            text: root.result;
+            text: root.expression;
 
             height: 6rem;
             vertical-alignment: center;

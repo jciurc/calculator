@@ -9,6 +9,7 @@ pub fn main() {
     let ui = MainWindow::new().unwrap();
     let ui_handle = ui.as_weak();
 
+    let mut expression: String = ui.get_expression().to_string();
     let mut display: String = ui.get_display().to_string();
     let mut open_count = 0;
     let mut decimal_used = false;
@@ -73,25 +74,25 @@ pub fn main() {
         }
 
         let is_valid_expression =
-            open_count == 0 && !"-+*/%^.".contains(display.chars().last().unwrap_or(' '));
+            open_count == 0 && !"-+*/%^.".contains(expression.chars().last().unwrap_or(' '));
 
-        // update results
         match char {
             'C' => {
-                ui.set_result("".to_shared_string());
-                ui.set_display("0".to_shared_string());
+                expression = "".to_string();
+                display = "0".to_string();
             }
             '=' if is_valid_expression => {
-                let result = calculate(display.to_string());
-                ui.set_result("".to_shared_string());
-                ui.set_display(result.to_shared_string());
+                let result = calculate(expression.clone());
+                expression = "".to_string();
                 display = result.to_string();
             }
             _ => {
-                ui.set_result(display.to_shared_string());
-                ui.set_display(display.to_shared_string());
+                expression = display.clone();
             }
         };
+
+        ui.set_expression(expression.to_shared_string());
+        ui.set_display(display.to_shared_string());
     });
 
     ui.run().unwrap();
