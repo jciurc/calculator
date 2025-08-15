@@ -17,6 +17,7 @@ pub fn main() {
     ui.on_callback(move |char| {
         let ui = ui_handle.unwrap();
         let char = char.chars().next().unwrap();
+        let prev_char = display.chars().last().unwrap_or(' ');
 
         match char {
             // clear leading 0
@@ -38,7 +39,7 @@ pub fn main() {
             }
             '0'..='9' => display.push(char),
             // ignore remaining chars until decimal is closed
-            _ if display.chars().last().unwrap_or(' ') == '.' => {}
+            _ if prev_char == '.' => {}
             '.' => {
                 if !decimal_used {
                     display.push(char);
@@ -50,7 +51,7 @@ pub fn main() {
                 decimal_used = false;
                 match char {
                     '-' => {
-                        if display.len() == 0 || display.chars().last().unwrap() != '-' {
+                        if display.len() == 0 || prev_char != '-' {
                             display.push(char);
                         }
                     }
@@ -59,8 +60,7 @@ pub fn main() {
                         open_count += 1;
                     }
                     // prevent dangling operators
-                    _ if display.len() == 0
-                        || "(-+*/%^".contains(display.chars().last().unwrap()) => {}
+                    _ if display.len() == 0 || "(-+*/%^".contains(prev_char) => {}
                     '+' | '*' | '/' | '%' | '^' => display.push(char),
                     ')' => {
                         if open_count > 0 {
@@ -73,8 +73,7 @@ pub fn main() {
             }
         }
 
-        let is_valid_expression =
-            open_count == 0 && !"-+*/%^.".contains(expression.chars().last().unwrap_or(' '));
+        let is_valid_expression = open_count == 0 && !"-+*/%^.".contains(prev_char);
 
         match char {
             'C' => {

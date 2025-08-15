@@ -6,10 +6,7 @@ pub fn calculate(expr: String) -> String {
     for char in expr.chars() {
         match char {
             '0'..='9' => current.push(char),
-            '-' if current.len() == 0 => {
-                current.push(char);
-                operators.push('+');
-            }
+            '-' if current.len() == 0 => current.push(char),
             '(' | '-' | '+' | '*' | '/' | '%' | '^' => {
                 operators.push(char);
                 output.push(current.clone());
@@ -21,5 +18,5 @@ pub fn calculate(expr: String) -> String {
 
     output.push(current);
     output.push(operators);
-    output.join("")
+    output.join(" ")
 }
