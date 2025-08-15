@@ -80,7 +80,7 @@ pub fn main() {
                 expression = "".to_string();
                 display = "0".to_string();
             }
-            '=' if is_valid_expression => {
+            '=' if is_valid_expression && expression.len() > 0 => {
                 let result = calculate(expression.clone());
                 expression = "".to_string();
                 display = result.to_string();
