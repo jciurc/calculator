@@ -1,4 +1,6 @@
+use crate::calculator::calculate;
 use slint::ToSharedString;
+mod calculator;
 
 slint::include_modules!();
 
@@ -42,7 +44,7 @@ pub fn main() {
                     decimal_used = true;
                 }
             }
-            // the remaining chars indicate a new number so a decimal is allowed again
+            // the remaining chars start a new number so a decimal is allowed again
             _ => {
                 decimal_used = false;
                 match char {
@@ -71,13 +73,25 @@ pub fn main() {
         }
 
         let is_valid_expression =
-            open_count == 0 && "-+*/%^.".contains(display.chars().last().unwrap_or(' '));
+            open_count == 0 && !"-+*/%^.".contains(display.chars().last().unwrap_or(' '));
 
-        ui.set_display(display.to_shared_string());
-        ui.set_result(match char {
-            'C' | '=' if is_valid_expression => "".to_shared_string(),
-            _ => display.to_shared_string(),
-        })
+        // update results
+        match char {
+            'C' => {
+                ui.set_result("".to_shared_string());
+                ui.set_display("0".to_shared_string());
+            }
+            '=' if is_valid_expression => {
+                let result = calculate(display.to_string());
+                ui.set_result("".to_shared_string());
+                ui.set_display(result.to_shared_string());
+                display = result.to_string();
+            }
+            _ => {
+                ui.set_result(display.to_shared_string());
+                ui.set_display(display.to_shared_string());
+            }
+        };
     });
 
     ui.run().unwrap();

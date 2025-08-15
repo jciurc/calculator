@@ -1,31 +1,3 @@
-use std::io::{Write, stdin, stdout};
-
-pub fn read(prompt: &str) -> String {
-    let mut input = String::new();
-
-    print!("{prompt}");
-    stdout().flush().expect("failed to flush");
-    stdin().read_line(&mut input).expect("failed to read");
-    input
-}
-
-pub fn run() {
-    println!("== Calculator ==");
-
-    let x: f64 = read("x: ").trim().parse().unwrap();
-    let y: f64 = read("y: ").trim().parse().unwrap();
-    let operator = read("Operator [+-*/]: ").trim().chars().next().unwrap();
-
-    let result = match operator {
-        '+' => x + y,
-        '-' => x - y,
-        '*' => x * y,
-        '/' => x / y,
-        _ => {
-            println!("Operator not recognized");
-            return;
-        }
-    };
-
-    println!("{x} {operator} {y} = {result}");
+pub fn calculate(expr: String) -> String {
+    "result".to_string()
 }
