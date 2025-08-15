@@ -1,3 +1,29 @@
+fn evaluate(mut tokens: Vec<String>) -> Option<f32> {
+    tokens.reverse();
+    let mut stack: Vec<f32> = Vec::new();
+
+    while let Some(token) = tokens.pop() {
+        match token {
+            _ if token.parse::<f32>().is_ok() => stack.push(token.parse::<f32>().unwrap()),
+            _ => {
+                let right = stack.pop().unwrap();
+                let left = stack.pop().unwrap();
+                match token.as_str() {
+                    "+" => stack.push(left + right),
+                    "-" => stack.push(left - right),
+                    "*" => stack.push(left * right),
+                    "/" => stack.push(left / right),
+                    "%" => stack.push(left % right),
+                    "^" => stack.push(left.powf(right)),
+                    _ => {}
+                }
+            }
+        }
+    }
+
+    return Some(stack[0]);
+}
+
 fn precedence(char: char) -> i32 {
     match char {
         '+' => 2,
@@ -69,5 +95,6 @@ pub fn calculate(expr: String) -> String {
     for op in stack {
         output.push(op.to_string());
     }
-    output.join(" ")
+
+    evaluate(output).unwrap().to_string()
 }
