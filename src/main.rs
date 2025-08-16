@@ -19,6 +19,9 @@ pub fn main() {
         let char = char.chars().next().unwrap();
         let prev_char = display.chars().last().unwrap_or(' ');
 
+        if display.contains("Invalid") {
+            display.clear();
+        }
         match char {
             // clear leading 0
             '0'..='9' | '(' | '-' if display == "0" => display.clear(),

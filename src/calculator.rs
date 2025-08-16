@@ -6,6 +6,10 @@ fn evaluate(mut tokens: Vec<String>) -> Option<f32> {
         match token {
             _ if token.parse::<f32>().is_ok() => stack.push(token.parse::<f32>().unwrap()),
             _ => {
+                if stack.len() < 2 {
+                    return None;
+                }
+
                 let right = stack.pop().unwrap();
                 let left = stack.pop().unwrap();
                 stack.push(match token.as_str() {
@@ -21,7 +25,7 @@ fn evaluate(mut tokens: Vec<String>) -> Option<f32> {
         }
     }
 
-    return Some(stack[0]);
+    if stack.len() == 1 { stack.pop() } else { None }
 }
 
 fn precedence(char: char) -> i32 {
@@ -81,9 +85,10 @@ pub fn calculate(expr: String) -> String {
                 while stack.len() > 0 && stack[stack.len() - 1] != '(' {
                     output.push(stack.pop().unwrap().to_string());
                 }
-                if stack.len() > 0 {
-                    stack.pop();
+                if stack.is_empty() {
+                    return "Invalid parentheses".to_string();
                 }
+                stack.pop();
             }
             _ => {}
         }
@@ -96,8 +101,15 @@ pub fn calculate(expr: String) -> String {
         output.push(stack.pop().unwrap().to_string());
     }
 
+    let result = evaluate(output.clone());
+    let result = if result.is_some() {
+        result.unwrap().to_string()
+    } else {
+        "Invalid".to_string()
+    };
+
     println!("\nexpression: \"{}\"", expr);
     println!("parsed: [{}]", output.join(","));
-    println!("result: {}", evaluate(output.clone()).unwrap().to_string());
-    evaluate(output).unwrap().to_string()
+    println!("result: {}", result);
+    result
 }
