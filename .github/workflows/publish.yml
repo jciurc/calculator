@@ -28,6 +28,7 @@ jobs:
       - name: Bundle
         run: |
           mkdir -p dist/pkg
+          cp favicon.ico dist/favicon.ico
           cp index.html dist/index.html
           cp pkg/app.js dist/pkg/app.js
           cp pkg/app_bg.wasm dist/pkg/app_bg.wasm
