@@ -23,7 +23,9 @@ export component MainWindow inherits Window {
             if ((event.modifiers.control && event.text == Key.Backspace) || event.text == "c") {
                 root.callback("C");
             }
-            root.callback(event.text);
+            if (event.text != Key.Shift && event.text != Key.Control && event.text != Key.Return) {
+                root.callback(event.text);
+            }
             accept
         }
     }
