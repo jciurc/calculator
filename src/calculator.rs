@@ -8,15 +8,15 @@ fn evaluate(mut tokens: Vec<String>) -> Option<f32> {
             _ => {
                 let right = stack.pop().unwrap();
                 let left = stack.pop().unwrap();
-                match token.as_str() {
-                    "+" => stack.push(left + right),
-                    "-" => stack.push(left - right),
-                    "*" => stack.push(left * right),
-                    "/" => stack.push(left / right),
-                    "%" => stack.push(left % right),
-                    "^" => stack.push(left.powf(right)),
-                    _ => {}
-                }
+                stack.push(match token.as_str() {
+                    "+" => left + right,
+                    "-" => left - right,
+                    "*" => left * right,
+                    "/" => left / right,
+                    "%" => left % right,
+                    "^" => left.powf(right),
+                    _ => continue,
+                })
             }
         }
     }
@@ -45,14 +45,20 @@ pub fn calculate(expr: String) -> String {
         match char {
             // build operand
             '0'..='9' | '.' => operand.push(char),
-            '-' if operand.is_empty() => operand.push(char),
+            // a leading '-' indicates operand is a negative number
+            '-' if operand.is_empty() => {
+                operand.push('-');
+                continue;
+            }
             // push operand
-            '+' | '-' | '*' | '/' | '%' | '^' | '(' | ')' if operand.len() > 0 => {
-                output.push(operand.clone());
-                operand.clear();
+            '+' | '-' | '*' | '/' | '%' | '^' | '(' | ')' => {
+                if operand.len() > 0 {
+                    output.push(operand.clone());
+                    operand.clear();
 
-                if char == '(' {
-                    stack.push('*');
+                    if char == '(' {
+                        stack.push('*');
+                    }
                 }
             }
             // skip illegal characters
@@ -68,13 +74,7 @@ pub fn calculate(expr: String) -> String {
                 {
                     output.push(stack.pop().unwrap().to_string());
                 }
-                if char == '-' {
-                    output.push("-1".to_string());
-                    stack.push('+');
-                    stack.push('/');
-                } else {
-                    stack.push(char);
-                }
+                stack.push(char)
             }
             '(' => stack.push(char),
             ')' => {
@@ -96,5 +96,6 @@ pub fn calculate(expr: String) -> String {
         output.push(op.to_string());
     }
 
+    println!("expression: {}", output.join(","));
     evaluate(output).unwrap().to_string()
 }
