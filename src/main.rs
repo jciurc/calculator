@@ -22,6 +22,7 @@ pub fn main() {
         match char {
             // clear leading 0
             '0'..='9' | '(' | '-' if display == "0" => display.clear(),
+            '0'..='9' | '(' if expression != display => display.clear(),
             _ => {}
         }
 
