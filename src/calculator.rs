@@ -70,7 +70,7 @@ pub fn calculate(expr: String) -> String {
             _ if precedence(char) > 0 => {
                 while stack.len() > 0
                     && precedence(stack[stack.len() - 1]) > 0
-                    && precedence(stack[stack.len() - 1]) < precedence(char)
+                    && precedence(stack[stack.len() - 1]) >= precedence(char)
                 {
                     output.push(stack.pop().unwrap().to_string());
                 }
@@ -92,10 +92,12 @@ pub fn calculate(expr: String) -> String {
     if operand.len() > 0 {
         output.push(operand);
     }
-    for op in stack {
-        output.push(op.to_string());
+    while stack.len() > 0 {
+        output.push(stack.pop().unwrap().to_string());
     }
 
-    println!("expression: {}", output.join(","));
+    println!("\nexpression: \"{}\"", expr);
+    println!("parsed: [{}]", output.join(","));
+    println!("result: {}", evaluate(output.clone()).unwrap().to_string());
     evaluate(output).unwrap().to_string()
 }
