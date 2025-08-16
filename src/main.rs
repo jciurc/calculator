@@ -78,7 +78,6 @@ pub fn main() {
         }
 
         let is_valid_expression = open_count == 0 && !"-+*/%^.".contains(prev_char);
-
         match char {
             'C' => {
                 expression = "".to_string();
