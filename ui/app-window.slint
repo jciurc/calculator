@@ -11,6 +11,23 @@ export component MainWindow inherits Window {
 
     callback callback(string) ;
 
+    forward-focus: my-key-handler;
+    my-key-handler := FocusScope {
+        key-pressed(event) => {
+            if (event.text == Key.Return) {
+                root.callback("=");
+            }
+            if (event.text == Key.Backspace) {
+                root.callback("⌫");
+            }
+            if ((event.modifiers.control && event.text == Key.Backspace) || event.text == "c") {
+                root.callback("C");
+            }
+            root.callback(event.text);
+            accept
+        }
+    }
+
     Rectangle {
         background: @linear-gradient(135deg, rgb(73, 82, 94),rgb(71, 71, 89));
         border-color: Styles.gradient;
