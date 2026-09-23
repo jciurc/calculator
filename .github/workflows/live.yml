@@ -1,4 +1,4 @@
-name: Deploy to symphony
+name: Live
 
 # Publishes the built site to symphony/<repo> (served at symphony.github.io/<repo>/).
 # Triggered only by pushing the `live` branch: git push origin main:live
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-symphony
+  group: live
   cancel-in-progress: true
 
 jobs:
