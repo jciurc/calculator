@@ -1,0 +1,47 @@
+name: Live
+
+# Publishes the built site to symphony/<repo> (served at symphony.github.io/<repo>/).
+# Triggered only by pushing the `live` branch: git push origin main:live
+on:
+  push:
+    branches: [live]
+    # tags: ['v*']   # uncomment later to also publish on version tags
+  workflow_dispatch:
+
+concurrency:
+  group: live
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Build
+        run: wasm-pack build --release --target web --out-name app
+
+      - name: Bundle
+        run: |
+          mkdir -p dist/pkg
+          cp favicon.ico dist/favicon.ico
+          cp index.html dist/index.html
+          cp pkg/app.js dist/pkg/app.js
+          cp pkg/app_bg.wasm dist/pkg/app_bg.wasm
+          touch dist/.nojekyll
+
+      - name: Push to symphony/calculator
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.SYMPHONY_DEPLOY_KEY }}
+          external_repository: symphony/calculator
+          publish_branch: main
+          publish_dir: ./dist
+          force_orphan: true
+          user_name: github-actions[bot]
+          user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_message: Deploy ${{ github.sha }}
